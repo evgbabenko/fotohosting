@@ -141,10 +141,20 @@ const PinDetail = ({ user }: Props) => {
 
         <h2 className='mt-5 text-xl font-semibold'>Comments</h2>
         <div className='max-h-370 overflow-y-hidden'>
-          {pinDetail.comments &&
-            pinDetail.comments.map((comment, index) => (
-              comment && <PinComment _ref={comment.postedBy._ref} comment={comment} key={`${comment._id}-${index}`}/>
-            ))}
+          {pinDetail.comments ? (
+            pinDetail.comments.map(
+              (comment, index) =>
+                comment && (
+                  <PinComment
+                    _ref={comment.postedBy._ref}
+                    comment={comment}
+                    key={`${comment._id}-${index}`}
+                  />
+                )
+            )
+          ) : (
+            <p className='text-sm py-1 text-black'>You will be first...</p>
+          )}
         </div>
       </div>
     </div>

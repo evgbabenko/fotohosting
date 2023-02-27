@@ -72,10 +72,10 @@ const PinCard = ({ pin, className }: Props) => {
 
    return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.5 }}
-      animate={{ opacity: 1, scale: 1 }}
+      initial={{ opacity: .4,  }}
+      animate={{ opacity: 1,  }}
       transition={{ duration: 0.8 }}
-      className={`m-2 relative opacity-0 ${className}`}
+      className={`m-2 relative opacity-0 bg-white p-2 rounded-xl ${className}`}
     >
       <div
         className={`w-full relative cursor-zoom-in hover:shadow-lg overflow-hidden rounded-lg transition-all duration-300 ease-in-out`}
@@ -141,9 +141,9 @@ const PinCard = ({ pin, className }: Props) => {
               )}
             </div>
             <div className='flex justify-between items-center gap-2 w-full'>
-              {pin?.destination && (
+              
                 <a
-                  href={pin?.destination}
+                  href={pin?.destination? pin?.destination: '#' }
                   target='_blank'
                   rel='noreferrer'
                   className='bg-white rounded-xl p-2 text-sm gap-1 text-black opacity-75 hover:opacity-100 hover:shadow-md transition-all duration-300 flex justify-start items-center flex-shrink-0 overflow-hidden whitespace-nowrap'
@@ -152,9 +152,12 @@ const PinCard = ({ pin, className }: Props) => {
                   }}
                 >
                   <BsFillArrowUpRightCircleFill className='text-black !h-5 !w-5 ' />
-                  <p>{linkReplece(pin?.destination).slice(0, 20)}</p>
+                   <p>{pin?.destination
+                     ? linkReplece(pin?.destination).slice(0, 20)
+                     : ''
+                   }</p>
                 </a>
-              )}
+              
               {pin?.postedBy?._ref === user?.sub && (
                 <button
                   onClick={(e) => {

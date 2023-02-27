@@ -32,12 +32,12 @@ const PinComment = ({ _ref, comment }: Props) => {
             alt=''
             className='w-8 h-8 rounded-full object-cover'
           />
-          <p className='font-semibold text-sm capitalize'>
+          <p className='font-semibold text-sm capitalize text-black'>
             {userData?.given_name}
           </p>
         </Link>
      
-      <div className='text-sm py-1'>{comment.comment}</div>
+      <div className='text-sm py-1 text-black'>{comment.comment}</div>
     </div>
   );
 };

@@ -5,8 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import { client } from '../utils/sanity';
 import Spinner from './Spinner';
 import { v4 as uuidv4 } from 'uuid';
-import { Category,  SanityUser, newPinCat } from '../../typings';
+import { Category, SanityUser, newPinCat } from '../../typings';
 import { categoriesQuery } from '../utils/data';
+import isUrl from 'is-url';
+
+
 
 interface Props {
   user: SanityUser | null;
@@ -15,7 +18,7 @@ interface Props {
 const CreatePin = ({ user }: Props) => {
   const navigate = useNavigate();
   const [categories, setCategories] = useState<Category[] | null>(null);
-  const [postCategories, setPostCategories] = useState <newPinCat[]>([])
+  const [postCategories, setPostCategories] = useState<newPinCat[]>([]);
   const [title, setTitle] = useState<string>('');
   const [about, setAbout] = useState<string>('');
   const [destination, setDestination] = useState<string>('');
@@ -24,6 +27,7 @@ const CreatePin = ({ user }: Props) => {
   const [category, setCategory] = useState<string | null>(null);
   const [imageAsset, setImageAsset] = useState<any | null>(null);
   const [wrongImageType, setWrongImageType] = useState<boolean | null>(null);
+  const [wrongDestination, setWrongDestination] = useState(false);
 
   useEffect(() => {
     client.fetch(categoriesQuery()).then((data) => {
@@ -48,7 +52,6 @@ const CreatePin = ({ user }: Props) => {
         })
         .then((document) => {
           setImageAsset(document);
-          console.log(imageAsset);
           setLoading(false);
         })
         .catch((error) => {
@@ -59,19 +62,21 @@ const CreatePin = ({ user }: Props) => {
     }
   };
 
-    const savePin = () => {
-    if (title && about && destination && imageAsset?._id && postCategories) {
+  const savePin = () => {
+    if (title && about && imageAsset?._id && postCategories) {
       const newPin = {
         _type: 'pin',
         title: title,
         about: about,
-        destination: destination,
+        destination: isUrl(destination)
+          ? destination
+          : process.env.REACT_APP_BASE_URL,
         image: {
           _type: 'image',
-          asset:{
+          asset: {
             _ref: imageAsset?._id,
             _type: 'image',
-          }
+          },
         },
         userId: user?._id,
         postedBy: {
@@ -86,8 +91,7 @@ const CreatePin = ({ user }: Props) => {
     } else {
       setFields(true);
     }
-      
-  } 
+  };
 
   if (!user) {
     navigate('/login', { replace: true });
@@ -121,7 +125,7 @@ const CreatePin = ({ user }: Props) => {
                   name='upload-file'
                   onChange={uploadImage}
                   className='w-0 h-0'
-                  /* accept='image/png, image/svg ,image/jpeg, image/gif, image/tiff' */
+                  accept='image/png, image/svg ,image/jpeg, image/gif, image/tiff'
                 />
               </label>
             ) : (
@@ -204,16 +208,21 @@ const CreatePin = ({ user }: Props) => {
                 name='destination'
                 id='destination'
                 placeholder=' '
-                required
                 value={destination}
-                onChange={(destination) => setDestination(destination.target.value)}
-                className='block py-2.5 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-sky-300 peer'
+                onChange={(destination) =>
+                  setDestination(destination.target.value)
+                }
+                className={`block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2  appearance-none focus:outline-none focus:ring-0 focus:border-sky-300 peer ${
+                  wrongDestination
+                    ? 'text-red-700 border-red-700'
+                    : 'border-gray-300 text-black'
+                }`}
               />
               <label
                 htmlFor='destination'
                 className='peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-sky-300 peer-focus:dark:text-v peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'
               >
-                Destination
+                Destination (use URL statment 'http://*.*') or leave empty
               </label>
             </div>
           </div>
@@ -267,7 +276,7 @@ const CreatePin = ({ user }: Props) => {
           <div className='flex justify-end items-end mt-5'>
             <button
               type='button'
-                 onClick={()=>savePin()} 
+              onClick={() => savePin()}
               className='bg-gray-500 hover:bg-sky-500 transition-all duration-500 px-3 py-2 rounded-xl text-white font-semibold hover:text-black'
             >
               Save
