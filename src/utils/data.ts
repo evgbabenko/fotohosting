@@ -1,3 +1,5 @@
+import { logRoles } from "@testing-library/react";
+import { client } from "./sanity";
 
 export const userQuery = (userId: string | null) => {
   const query = `*[_type == 'user' && _id == '${userId}']`;
@@ -21,6 +23,21 @@ export const fetchUserData = (userId: string) => {
   return query;
 };
 
+export const pinDetailQuery = (pinId: string) => {
+  const query = `*[_type == 'pin' && _id == '${pinId}']`;
+  return query;
+}
 
+export const fetchCommentImage = (ref: string) => {
+  
+  const query = `*[_type == 'user' && _id == '${ref}']`;
 
+  return query;
+
+/*   return client.fetch(query).then((data) => {
+    return data[0] as string;
+  }); */
+}
 /* `*[_type == 'pin' && category[]._ref match '${categoryId}' || title match '${searchTerm}' || about match '${searchTerm}*'] | order(_createdAt desc)` */
+
+

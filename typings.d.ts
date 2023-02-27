@@ -27,8 +27,12 @@ interface Image {
 
 export interface Comment {
   _id: string;
-  postedBy: string;
-  comment: [string];
+  postedBy: {
+    _ref: string;
+    _type: 'postedBy';
+    _id: string;
+  };
+  comment: string;
 }
 
 export interface Category {
@@ -53,7 +57,7 @@ export interface Pin {
   image: Image;
   about: string;
   destination: string;
-  comment: Comment[];
+  comments: Comment[];
   userId: string;
   postedBy: {
     _ref: string;

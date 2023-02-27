@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { MdDownloadForOffline } from 'react-icons/md';
-import { AiTwotoneDelete } from 'react-icons/ai';
-import { BsFillArrowUpRightCircleFill } from 'react-icons/bs';
+import { BsFillArrowUpRightCircleFill, BsFillCloudDownloadFill, BsFillTrashFill } from 'react-icons/bs';
 
 import { Pin, SanityUser, User } from '../../typings';
 import { urlFor, client } from '../utils/sanity';
@@ -72,17 +70,15 @@ const PinCard = ({ pin, className }: Props) => {
       .then((e) => setUserData(e[0]));
   }, [pin]);
 
-
-  return (
+   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.5 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.8 }} 
-
+      transition={{ duration: 0.8 }}
       className={`m-2 relative opacity-0 ${className}`}
     >
       <div
-        className={`w-auto relative cursor-zoom-in hover:shadow-lg overflow-hidden rounded-lg transition-all duration-300 ease-in-out`}
+        className={`w-full relative cursor-zoom-in hover:shadow-lg overflow-hidden rounded-lg transition-all duration-300 ease-in-out`}
         onMouseEnter={() => setPostHovered(true)}
         onMouseLeave={() => setPostHovered(false)}
         onClick={() => navigate(`/pin-detail/${pin?._id}`)}
@@ -104,15 +100,20 @@ const PinCard = ({ pin, className }: Props) => {
               <div className=' flex gap-2'>
                 {user ? (
                   <a
-                    href={`${urlFor(pin.image).url()}?dl=`}
+                    href={`${urlFor(pin?.image).url()}?dl=`}
                     download
                     onClick={(e) => e.stopPropagation()}
+                    className='bg-white rounded-xl p-2 text-sm gap-1 text-black opacity-75 hover:opacity-100 hover:shadow-md transition-all duration-300 flex justify-start items-center flex-shrink-0 overflow-hidden whitespace-nowrap'
                   >
-                    <MdDownloadForOffline className='bg-white text-black h-7 w-7 rounded-full flex items-center justify-center text-xl opacity-75 hover:opacity-100 hover:shadow-lg hover:outline-none transition-all duration-300' />
+                    <BsFillCloudDownloadFill className='text-black !h-5 !w-5 ' />
                   </a>
                 ) : (
-                  <Link to='/login' onClick={(e) => e.stopPropagation()}>
-                    <MdDownloadForOffline className='bg-white text-black h-7 w-7 rounded-full flex items-center justify-center text-xl opacity-75 hover:opacity-100 hover:shadow-lg hover:outline-none transition-all duration-300' />
+                  <Link
+                    to='/login'
+                    onClick={(e) => e.stopPropagation()}
+                    className='bg-white rounded-xl p-2 text-sm gap-1 text-black opacity-75 hover:opacity-100 hover:shadow-md transition-all duration-300 flex justify-start items-center flex-shrink-0 overflow-hidden whitespace-nowrap'
+                  >
+                    <BsFillCloudDownloadFill className='bg-white text-black h-7 w-7 rounded-full flex items-center justify-center text-xl opacity-75 hover:opacity-100 hover:shadow-lg hover:outline-none transition-all duration-300' />
                   </Link>
                 )}
               </div>
@@ -163,7 +164,7 @@ const PinCard = ({ pin, className }: Props) => {
                   type='button'
                   className='bg-white p-2 opacity-70 hover:opacity-100 text-sm rounded-xl transition-all duration-300'
                 >
-                  <AiTwotoneDelete className='text-black h-4 w-4' />
+                  <BsFillTrashFill className='text-black h-4 w-4' />
                 </button>
               )}
             </div>
@@ -188,3 +189,5 @@ const PinCard = ({ pin, className }: Props) => {
 };
 
 export default PinCard;
+
+
