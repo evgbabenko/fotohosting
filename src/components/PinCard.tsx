@@ -113,7 +113,7 @@ const PinCard = ({ pin, className }: Props) => {
                     onClick={(e) => e.stopPropagation()}
                     className='bg-white rounded-xl p-2 text-sm gap-1 text-black opacity-75 hover:opacity-100 hover:shadow-md transition-all duration-300 flex justify-start items-center flex-shrink-0 overflow-hidden whitespace-nowrap'
                   >
-                    <BsFillCloudDownloadFill className='bg-white text-black h-7 w-7 rounded-full flex items-center justify-center text-xl opacity-75 hover:opacity-100 hover:shadow-lg hover:outline-none transition-all duration-300' />
+                       <BsFillCloudDownloadFill className='bg-white text-black h-7 w-7 rounded-full flex items-center justify-center text-xl opacity-75 hover:opacity-100 hover:shadow-lg hover:outline-none transition-all duration-300' />
                   </Link>
                 )}
               </div>

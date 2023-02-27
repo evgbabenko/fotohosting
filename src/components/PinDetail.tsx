@@ -85,9 +85,10 @@ const PinDetail = ({ user }: Props) => {
                 href={`${urlFor(pinDetail?.image).url()}?dl=`}
                 download
                 onClick={(e) => e.stopPropagation()}
-                className='bg-white rounded-xl p-2 text-sm gap-1 text-black opacity-75 hover:opacity-100 hover:shadow-md transition-all duration-300 flex justify-start items-center flex-shrink-0 overflow-hidden whitespace-nowrap'
+                className='bg-white rounded-xl p-2 text-sm gap-1 text-black opacity-70 hover:opacity-100 hover:shadow-md transition-all duration-300 flex justify-start items-center flex-shrink-0 overflow-hidden whitespace-nowrap hover:font-semibold'
               >
                 <BsFillCloudDownloadFill className='text-black !h-5 !w-5 ' />
+                <p className='text-sm'>Download</p>
               </a>
             ) : (
               <Link
