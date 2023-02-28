@@ -98,8 +98,8 @@ const SideBar = ({ user, closeToggle }: Props) => {
                 }) => `text-sm xl:text-xl flex items-center px-5 gap-3 transition-all duration-200 ease-in-out capitalize 
             ${
               isActive
-                ? 'font-semibold border-r-2 border-black'
-                : 'text-gray-500 hover:text-black'
+                ? 'font-semibold border-r-2 border-black opacity-100'
+                : 'text-gray-500 hover:text-black opacity-70 hover:opacity-100'
             }`}
               >
                 {category?.catImage ? (
