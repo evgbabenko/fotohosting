@@ -36,6 +36,7 @@ const CreatePin = ({ user }: Props) => {
   }, []);
 
   const uploadImage = (e: any) => {
+    setLoading(true);
     const { type, name } = e.target.files[0];
     if (
       type === 'image/png' ||
@@ -100,7 +101,7 @@ const CreatePin = ({ user }: Props) => {
     <div className='w-full flex flex-col justify-center items-center mt-5 lg:h-4/5'>
       <div className='flex lg:flex-row flex-col justify-center items-center bg-white lg:p-5 p-3 lg:w-4/5 w-full'>
         <div className='bg-secondaryColor p-3 flex-0.7 w-full'>
-          <div className='flex justify-center items-center flex-col border border-dotted border-gray-300 p-3 w-full h-420'>
+          <div className='flex justify-center items-center flex-col border border-dotted border-gray-300 p-3 w-full h-420 hover:bg-white transition-all duration-200'>
             {loading && <Spinner message='Uploading...' />}
             {wrongImageType && (
               <p className='font-semibold text-red-500 text-lg'>
@@ -108,9 +109,9 @@ const CreatePin = ({ user }: Props) => {
               </p>
             )}
             {!imageAsset ? (
-              <label>
-                <div className='flex flex-col items-center justify-center h-full'>
-                  <div className='flex flex-col justify-center items-center'>
+              <label className=''>
+                <div className='flex flex-col items-center justify-center h-full '>
+                  <div className='flex flex-col justify-center items-center '>
                     <p className='font-semibold text-2xl'>
                       <AiOutlineCloudUpload />
                     </p>
