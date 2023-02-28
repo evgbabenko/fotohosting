@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Category, SanityUser } from '../../typings';
 import { Link, NavLink } from 'react-router-dom';
-import { RiHomeFill } from 'react-icons/ri';
-import { IoIosArrowForward } from 'react-icons/io';
 import { client, urlFor } from '../utils/sanity';
 import { categoriesQuery } from '../utils/data';
+import { BsFileEarmarkPersonFill, BsHouseDoorFill, BsPersonCircle } from 'react-icons/bs';
 
 interface Props {
   user: SanityUser | null;
@@ -50,10 +49,10 @@ const SideBar = ({ user, closeToggle }: Props) => {
             }`}
             onClick={hangleCloseSideBar}
           >
-            <RiHomeFill className='h-5 w-5' />
+            <BsHouseDoorFill className='h-5 w-5' />
             <p className='text-sm'>Home</p>
           </NavLink>
-          {!user && (
+          {!user ? (
             <NavLink
               to='/login'
               className={({
@@ -66,8 +65,24 @@ const SideBar = ({ user, closeToggle }: Props) => {
             }`}
               onClick={hangleCloseSideBar}
             >
-              <RiHomeFill className='h-5 w-5' />
+              <BsPersonCircle className='h-5 w-5' />
               <p className='text-sm'>Login</p>
+            </NavLink>
+          ) : (
+            <NavLink
+              to={`/user-profile/${user?._id}`}
+              className={({
+                isActive,
+              }) => `text-sm xl:text-xl flex items-center px-5 gap-3 transition-all duration-200 ease-in-out capitalize 
+            ${
+              isActive
+                ? 'font-semibold border-r-2 border-black'
+                : 'text-gray-500 hover:text-black'
+            }`}
+              onClick={hangleCloseSideBar}
+            >
+              <BsFileEarmarkPersonFill className='h-5 w-5' />
+              <p className='text-sm'>User Profile</p>
             </NavLink>
           )}
 
@@ -91,7 +106,7 @@ const SideBar = ({ user, closeToggle }: Props) => {
                   <img
                     src={urlFor(category?.catImage).url()}
                     alt=''
-                    className='w-10 aspect-square rounded-full'
+                    className='w-10 aspect-square rounded-full object-cover'
                   />
                 ) : (
                   <img
