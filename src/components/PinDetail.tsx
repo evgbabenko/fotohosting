@@ -67,7 +67,7 @@ const PinDetail = ({ user }: Props) => {
   if (!pinDetail) return <Spinner message='Loading info...' />;
   return (
     <div
-      className='flex flex-col xl:flex-row mx-auto bg-white px-5 py-5 gap-5'
+      className='flex flex-col mx-auto bg-white px-5 py-5 gap-5'
       style={{ maxWidth: '1500px', borderRadius: '32px' }}
     >
       <div className='flex justify-center items-center md:items-start flex-initial'>

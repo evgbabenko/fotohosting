@@ -1,98 +1,119 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { googleLogout } from '@react-oauth/google';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { MdOutlineLogout, MdOutlineSave } from 'react-icons/md';
+import MasonryLayout from './MasonryLayout';
 
-interface Props {
-  userId: string;
-}
+import { client, urlFor } from '../utils/sanity';
+import { fetchUserData, userPinsHistory, userSavedHistory } from '../utils/data';
+import { Pin, SanityUser, User } from '../../typings';
+import Spinner from './Spinner';
 
-const UserProfile = ({ userId }: Props) => {
+const activeBtnStyles =
+  'bg-red-500 text-white font-bold p-2 rounded-full w-20 outline-none';
+const notActiveBtnStyles =
+  'bg-primary mr-4 text-black font-bold p-2 rounded-full w-20 outline-none';
+
+const UserProfile = () => {
   const navigate = useNavigate();
-  const handleLogOut = () => {
-    localStorage.clear();
-    googleLogout();
-    navigate('/', { replace: false });
-    navigate(0);
+  const { uId } = useParams();
+  const [userHistory, setUserHistory] = useState<Pin[]>([]);
+  const [userData, setUserData] = useState<SanityUser | null>(null);
+  const [activeSaveBtn, seaActiveSaveBtn] = useState(false);
+  const [activeBtn, setActiveBtn] = useState('created');
+
+  useEffect(() => {
+    uId &&
+      client.fetch(userPinsHistory(uId)).then((data) => {
+        setUserHistory(data);
+      });
+
+    uId &&
+      client.fetch(fetchUserData(uId)).then((data) => {
+        setUserData(data[0]);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (activeBtn === 'created') {
+      uId && client.fetch(userPinsHistory(uId)).then((data) => {
+        setUserHistory(data);
+      });
+    } else if (activeBtn === 'liked') {
+      uId &&
+        client.fetch(userSavedHistory(uId)).then((data) => {
+          setUserHistory(data);
+        });
+    }
+  }, [activeBtn]);
+
+  const randomData = () => {
+    const rand = Math.floor(Math.random() * userHistory.length);
+    return userHistory[rand];
   };
 
+  const handleLogout = () => {
+    localStorage.clear();
+    googleLogout();
+    window.location.href = '/';
+  };
+
+  if (userHistory.length === 0)
+    return <Spinner message='Loading profile info...' />;
+  console.log(userData);
   return (
-    <div className='w-full flex flex-col'>
-      <div className='mt-5 flex flex-col w-full items-center'>
-        <div className='bg-white p-5 w-full flex flex-col max-w-md md:max-w-4xl'>
-          {/* userName */}
-          <div className='w-full flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3 md:items-center'>
-            <div className='relative z-0 w-full mb-6 group'>
-              <input
-                type='text'
-                name='username'
-                id='username'
-                placeholder=' '
-                required
-                /* value={title}
-                onChange={(title) => setTitle(title.target.value)} */
-                className='block py-2.5 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-sky-300 peer'
-              />
-              <label
-                htmlFor='username'
-                className='peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-sky-300 peer-focus:dark:text-v peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'
-              >
-                User name
-              </label>
-            </div>
+    <div className='w-full h-full flex flex-col items-center p-5'>
+      <div className='flex flex-col pb-5'>
+        <div className='mb-7 flex flex-col relative items-center'>
+          <div className='flex flex-col justify-center'>
+            <img
+              src={urlFor(randomData().image).url()}
+              alt=''
+              className='w-full h-370 2xl:h-510 rounded-xl shadow-xl'
+            />
+            <MdOutlineLogout
+              className='bg-white rounded-full h-10 w-10 p-2 absolute top-5 right-5 cursor-pointer'
+              title='Logout'
+              onClick={() => handleLogout()}
+            />
           </div>
-          {/* end username */}
-          {/* userName */}
-          <div className='w-full flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3 md:items-center'>
-            <div className='relative z-0 w-full mb-6 group'>
-              <input
-                type='text'
-                name='secondname'
-                id='secondname'
-                placeholder=' '
-                required
-                /* value={title}
-                onChange={(title) => setTitle(title.target.value)} */
-                className='block py-2.5 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-sky-300 peer'
-              />
-              <label
-                htmlFor='secondname'
-                className='peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-sky-300 peer-focus:dark:text-v peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'
-              >
-                Second name
-              </label>
-            </div>
-          </div>
-          {/* end username */}
-          {/* userName */}
-          <div className='w-full flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3 md:items-center'>
-            <div className='relative z-0 w-full mb-6 group'>
-              <input
-                type='email'
-                name='email'
-                id='email'
-                placeholder=' '
-                required
-                readOnly
-                value='help@help.com'
-                /* onChange={(title) => setTitle(title.target.value)} */
-                className='block py-2.5 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-sky-300 peer'
-              />
-              <label
-                htmlFor='email'
-                className='peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-sky-300 peer-focus:dark:text-v peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'
-              >
-                Email
-              </label>
-            </div>
-          </div>
-          {/* end username */}
-          <div className='w-full flex flex-row justify-around'>
-            <button>Save</button>
-            <button type='button' onClick={() => handleLogOut()} className='rounded-xl px-2 py-2 bg-sky-300 text-sm font-semibold'>
-              LogOut
-            </button>
-          </div>
+          <img
+            src={userData?.image}
+            alt=''
+            className='relative w-16 h-16 object-cover rounded-full bottom-8 z-10 shadow-xl'
+          />
+
+          <h1 className='text-2xl font-semibold italic'>
+            {userData?.given_name} {userData?.family_name}
+          </h1>
         </div>
+      </div>
+      <div className='flex justify-between max-w-[200px] w-full'>
+        <button
+          type='button'
+          onClick={() => {
+            setActiveBtn('created');
+          }}
+          className={`${
+            activeBtn === 'created' ? activeBtnStyles : notActiveBtnStyles
+          }`}
+        >
+          Created
+        </button>
+        <button
+          type='button'
+          onClick={() => {
+            setActiveBtn('liked');
+          }}
+          className={`${
+            activeBtn === 'liked' ? activeBtnStyles : notActiveBtnStyles
+          }`}
+        >
+          Liked
+        </button>
+      </div>
+      <div className='mt-5 flex flex-col w-full items-center px-5'>
+        {userHistory && <MasonryLayout pins={userHistory} />}
       </div>
     </div>
   );

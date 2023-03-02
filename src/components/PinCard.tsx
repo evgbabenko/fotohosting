@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { BsFillArrowUpRightCircleFill, BsFillCloudDownloadFill, BsFillTrashFill } from 'react-icons/bs';
+import {
+  BsFillArrowUpRightCircleFill,
+  BsFillCloudDownloadFill,
+  BsFillTrashFill,
+} from 'react-icons/bs';
 
 import { Pin, SanityUser, User } from '../../typings';
 import { urlFor, client } from '../utils/sanity';
 import { fetchUser } from '../utils/fetchUser';
 import { fetchUserData } from '../utils/data';
 import { motion } from 'framer-motion';
+import { MdFavorite } from 'react-icons/md';
 
 interface Props {
   pin: Pin;
@@ -17,7 +22,7 @@ interface Props {
 const PinCard = ({ pin, className }: Props) => {
   const navigate = useNavigate();
   const [postHovered, setPostHovered] = useState(false);
-  const [savingPost, setSavingPost] = useState(false);
+  const [likingPost, setLikingPost] = useState(false);
   const [userData, setUserData] = useState<SanityUser>();
 
   const user: User = fetchUser();
@@ -25,12 +30,12 @@ const PinCard = ({ pin, className }: Props) => {
     (item) => item?.postedBy?._id === user?.sub
   );
 
-  const savePin = (_id: string) => {
+  const likePin = (_id: string) => {
     if (!user) {
       navigate('login');
     }
     if (!alreadySaved) {
-      setSavingPost(true);
+      setLikingPost(true);
 
       client
         .patch(pin?._id)
@@ -47,7 +52,7 @@ const PinCard = ({ pin, className }: Props) => {
         ])
         .commit()
         .then(() => window.location.reload());
-      setSavingPost(false);
+      setLikingPost(false);
     }
   };
 
@@ -70,10 +75,10 @@ const PinCard = ({ pin, className }: Props) => {
       .then((e) => setUserData(e[0]));
   }, [pin]);
 
-   return (
+  return (
     <motion.div
-      initial={{ opacity: .4,  }}
-      animate={{ opacity: 1,  }}
+      initial={{ opacity: 0.4 }}
+      animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
       className={`m-2 relative opacity-0 bg-white p-2 rounded-xl ${className}`}
     >
@@ -113,51 +118,52 @@ const PinCard = ({ pin, className }: Props) => {
                     onClick={(e) => e.stopPropagation()}
                     className='bg-white rounded-xl p-2 text-sm gap-1 text-black opacity-75 hover:opacity-100 hover:shadow-md transition-all duration-300 flex justify-start items-center flex-shrink-0 overflow-hidden whitespace-nowrap'
                   >
-                       <BsFillCloudDownloadFill className='bg-white text-black h-7 w-7 rounded-full flex items-center justify-center text-xl opacity-75 hover:opacity-100 hover:shadow-lg hover:outline-none transition-all duration-300' />
+                    <BsFillCloudDownloadFill className='bg-white text-black h-7 w-7 rounded-full flex items-center justify-center text-xl opacity-75 hover:opacity-100 hover:shadow-lg hover:outline-none transition-all duration-300' />
                   </Link>
                 )}
               </div>
               {alreadySaved && user ? (
                 <button
                   type='button'
-                  className='bg-red-500 opacity-70 hover:opacity-100 text-white  px-5 py-1 text-sm rounded-xl transition-all duration-300'
+                  className='bg-red-500 opacity-70 hover:opacity-100 text-white  px-5 py-1 text-sm rounded-xl transition-all duration-300 flex flex-row gap-2'
                   onClick={(e) => {
                     e.stopPropagation();
                   }}
                 >
-                  {pin?.save?.length} Saved
+                  {pin?.save?.length} <MdFavorite className='h-5 w-5 text-white'/>
+                  Like
                 </button>
               ) : (
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    savePin(pin?._id);
+                    likePin(pin?._id);
                   }}
                   type='button'
                   className='bg-red-500 opacity-70 hover:opacity-100 text-white  px-5 py-1 text-sm rounded-xl transition-all duration-300'
                 >
-                  {savingPost ? 'saving' : 'Save'}
+                  {likingPost ? 'liking' : 'Like'}
                 </button>
               )}
             </div>
             <div className='flex justify-between items-center gap-2 w-full'>
-              
-                <a
-                  href={pin?.destination? pin?.destination: '#' }
-                  target='_blank'
-                  rel='noreferrer'
-                  className='bg-white rounded-xl p-2 text-sm gap-1 text-black opacity-75 hover:opacity-100 hover:shadow-md transition-all duration-300 flex justify-start items-center flex-shrink-0 overflow-hidden whitespace-nowrap'
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                >
-                  <BsFillArrowUpRightCircleFill className='text-black !h-5 !w-5 ' />
-                   <p>{pin?.destination
-                     ? linkReplece(pin?.destination).slice(0, 20)
-                     : ''
-                   }</p>
-                </a>
-              
+              <a
+                href={pin?.destination ? pin?.destination : '#'}
+                target='_blank'
+                rel='noreferrer'
+                className='bg-white rounded-xl p-2 text-sm gap-1 text-black opacity-75 hover:opacity-100 hover:shadow-md transition-all duration-300 flex justify-start items-center flex-shrink-0 overflow-hidden whitespace-nowrap'
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                <BsFillArrowUpRightCircleFill className='text-black !h-5 !w-5 ' />
+                <p>
+                  {pin?.destination
+                    ? linkReplece(pin?.destination).slice(0, 20)
+                    : ''}
+                </p>
+              </a>
+
               {pin?.postedBy?._ref === user?.sub && (
                 <button
                   onClick={(e) => {
@@ -175,7 +181,7 @@ const PinCard = ({ pin, className }: Props) => {
         )}
       </div>
       <Link
-        to={`/user-profile/${user?.sub}`}
+        to={`/user-profile/${userData?._id}`}
         className='flex gap-2 mt-2 items-center w-full '
       >
         <img
@@ -192,5 +198,3 @@ const PinCard = ({ pin, className }: Props) => {
 };
 
 export default PinCard;
-
-
