@@ -27,7 +27,7 @@ export const fetchCommentImage = (ref: string) => {
 };
 
 export const userPinsHistory = (userId: string) => {
-  return `*[_type == 'pin' && userId == '${userId}']`;
+  return `*[_type == 'pin' && userId == '${userId}'] | order(_createdAt desc)`;
 };
 
 export const userSavedHistory = (userId: string) => {
