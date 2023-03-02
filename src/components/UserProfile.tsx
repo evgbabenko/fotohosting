@@ -55,7 +55,6 @@ const UserProfile = () => {
 
   if (userHistory.length === 0)
     return <Spinner message='Loading profile info...' />;
-  console.log(userData);
   return (
     <div className='w-full h-full flex flex-col items-center p-5'>
       <div className='flex flex-col pb-5'>
