@@ -24,15 +24,10 @@ const UserProfile = () => {
 
   useEffect(() => {
     uId &&
-      client.fetch(userPinsHistory(uId)).then((data) => {
-        setUserHistory(data);
-      });
-
-    uId &&
       client.fetch(fetchUserData(uId)).then((data) => {
         setUserData(data[0]);
       });
-  }, []);
+  }, [uId]);
 
   useEffect(() => {
     if (activeBtn === 'created') {
@@ -45,7 +40,7 @@ const UserProfile = () => {
           setUserHistory(data);
         });
     }
-  }, [activeBtn]);
+  }, [activeBtn, uId]);
 
   const randomData = () => {
     const rand = Math.floor(Math.random() * userHistory.length);
