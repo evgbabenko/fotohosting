@@ -43,7 +43,8 @@ const CreatePin = ({ user }: Props) => {
       type === 'image/svg' ||
       type === 'image/jpeg' ||
       type === 'image/gif' ||
-      type === 'image/tiff'
+      type === 'image/tiff' ||
+      type === 'image/webp'
     ) {
       setWrongImageType(false);
       client.assets
@@ -118,7 +119,7 @@ const CreatePin = ({ user }: Props) => {
                     <p className='text-lg'>Click to upload</p>
                   </div>
                   <p className='mt-32 text-gray-400'>
-                    use HQ JPG, PNG, SVG, GIF or TIFF less than 20md
+                    use HQ JPG, PNG, SVG, GIF, WEBP or TIFF less than 20md
                   </p>
                 </div>
                 <input
@@ -126,7 +127,7 @@ const CreatePin = ({ user }: Props) => {
                   name='upload-file'
                   onChange={uploadImage}
                   className='w-0 h-0'
-                  accept='image/png, image/svg ,image/jpeg, image/gif, image/tiff'
+                  accept='image/png, image/svg ,image/jpeg, image/gif, image/tiff, image/webp'
                 />
               </label>
             ) : (

@@ -8,9 +8,16 @@ export const categoriesQuery = () => {
   return query;
 };
 
-export const feedQuery = (categoryId?: string, searchTerm?: string) => {
-  return categoryId || searchTerm
-    ? `*[_type == 'pin' && category[]._ref match (*[_type=='category' && categoryTitle match '${categoryId}'][0]._id) || title match '${searchTerm}' || about match '${searchTerm}*'] | order(_createdAt desc)`
+export const feedQuery = (categoryId?: string) => {
+  return (categoryId )
+    ? `*[_type == 'pin' && category[]._ref match (*[_type=='category' && categoryTitle match '${categoryId}'][0]._id)] | order(_createdAt desc)`
+    : `*[_type == 'pin'] | order(_createdAt desc)`;
+}; // get all pictures or filtered by category or search
+
+export const searchQuery = (searchTerm?: string) => {
+  console.log(searchTerm)
+  return (searchTerm)
+    ? `*[_type == 'pin' && title match '${searchTerm}*' || about match '${searchTerm}*'] | order(_createdAt desc)`
     : `*[_type == 'pin'] | order(_createdAt desc)`;
 }; // get all pictures or filtered by category or search
 

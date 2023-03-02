@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { client, urlFor } from '../utils/sanity';
+import { client } from '../utils/sanity';
 import MasonryLayout from './MasonryLayout'; 
 import Spinner from './Spinner';
 import { feedQuery } from '../utils/data';

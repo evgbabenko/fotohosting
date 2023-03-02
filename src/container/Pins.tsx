@@ -24,7 +24,7 @@ const Pins = ({ user }: Props) => {
             element={<PinDetail user={user} />}
           />
           <Route path='/create-pin' element={<CreatePin user={user} />} />
-          <Route path='/search' element={<Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          <Route path='/search' element={<Search searchTerm={searchTerm} />
             }
           />
         </Routes>
