@@ -8,7 +8,7 @@ interface Props {
 }
 
 const breakpointColumnsObj = {
-  1800: 5,
+  1800: 4,
   1200: 4,
   1000: 3,
   500: 1,

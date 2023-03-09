@@ -80,7 +80,7 @@ const PinCard = ({ pin, className }: Props) => {
       initial={{ opacity: 0.4 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
-      className={`m-2 relative opacity-0 bg-white p-2 rounded-xl ${className}`}
+      className={`m-2 relative card bg-base-100 shadow-xl ${className}`}
     >
       <div
         className='card card-compact w-full bg-base-100 shadow-xl cursor-pointer'
