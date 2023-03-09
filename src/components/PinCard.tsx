@@ -82,13 +82,16 @@ const PinCard = ({ pin, className }: Props) => {
       transition={{ duration: 0.8 }}
       className={`m-2 relative opacity-0 bg-white p-2 rounded-xl ${className}`}
     >
-      <div className='card card-compact w-full bg-base-100 shadow-xl'>
+      <div
+        className='card card-compact w-full bg-base-100 shadow-xl cursor-pointer'
+        onClick={() => navigate(`/pin-detail/${pin?._id}`)}
+      >
         <figure>
           <img src={urlFor(pin.image).url()} alt={pin.title} />
         </figure>
         <div className='card-body'>
           <h2 className='card-title'>{pin.title}</h2>
-    {/*       <p></p> */}
+          {/*       <p></p> */}
           <div className='card-actions justify-end items-center'>
             {alreadySaved && user ? (
               <button
