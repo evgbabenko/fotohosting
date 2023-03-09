@@ -15,7 +15,6 @@ export const feedQuery = (categoryId?: string) => {
 }; // get all pictures or filtered by category or search
 
 export const searchQuery = (searchTerm?: string) => {
-  console.log(searchTerm)
   return (searchTerm)
     ? `*[_type == 'pin' && title match '${searchTerm}*' || about match '${searchTerm}*'] | order(_createdAt desc)`
     : `*[_type == 'pin'] | order(_createdAt desc)`;

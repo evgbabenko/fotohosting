@@ -82,76 +82,64 @@ const PinCard = ({ pin, className }: Props) => {
       transition={{ duration: 0.8 }}
       className={`m-2 relative opacity-0 bg-white p-2 rounded-xl ${className}`}
     >
-      <div
-        className={`w-full relative cursor-zoom-in hover:shadow-lg overflow-hidden rounded-lg transition-all duration-300 ease-in-out`}
-        onMouseEnter={() => setPostHovered(true)}
-        onMouseLeave={() => setPostHovered(false)}
-        onClick={() => navigate(`/pin-detail/${pin?._id}`)}
-      >
-        <img
-          src={urlFor(pin.image).width(250).url()}
-          alt=''
-          className='rounded-lg w-full h-full object-cover'
-        />
-        {postHovered && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: postHovered ? 1 : 0 }}
-            transition={{ duration: 0.8 }}
-            className='absolute top-0 w-full h-full flex flex-col justify-between p-1 pr-2 pt-2 pb-3 z-50'
-            style={{ height: '100%' }}
-          >
-            <div className='flex items-center justify-between'>
-              <div className=' flex gap-2'>
-                {user ? (
-                  <a
-                    href={`${urlFor(pin?.image).url()}?dl=`}
-                    download
-                    onClick={(e) => e.stopPropagation()}
-                    className='bg-white rounded-xl p-2 text-sm gap-1 text-black opacity-75 hover:opacity-100 hover:shadow-md transition-all duration-300 flex justify-start items-center flex-shrink-0 overflow-hidden whitespace-nowrap'
-                  >
-                    <BsFillCloudDownloadFill className='text-black !h-5 !w-5 ' />
-                  </a>
-                ) : (
-                  <Link
-                    to='/login'
-                    onClick={(e) => e.stopPropagation()}
-                    className='bg-white rounded-xl p-2 text-sm gap-1 text-black opacity-75 hover:opacity-100 hover:shadow-md transition-all duration-300 flex justify-start items-center flex-shrink-0 overflow-hidden whitespace-nowrap'
-                  >
-                    <BsFillCloudDownloadFill className='bg-white text-black h-7 w-7 rounded-full flex items-center justify-center text-xl opacity-75 hover:opacity-100 hover:shadow-lg hover:outline-none transition-all duration-300' />
-                  </Link>
-                )}
-              </div>
-              {alreadySaved && user ? (
-                <button
-                  type='button'
-                  className='bg-red-500 opacity-70 hover:opacity-100 text-white  px-5 py-1 text-sm rounded-xl transition-all duration-300 flex flex-row gap-2'
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                >
-                  {pin?.save?.length} <MdFavorite className='h-5 w-5 text-white'/>
-                  Like
-                </button>
-              ) : (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    likePin(pin?._id);
-                  }}
-                  type='button'
-                  className='bg-red-500 opacity-70 hover:opacity-100 text-white  px-5 py-1 text-sm rounded-xl transition-all duration-300'
-                >
-                  {likingPost ? 'liking' : 'Like'}
-                </button>
-              )}
-            </div>
-            <div className='flex justify-between items-center gap-2 w-full'>
+      <div className='card card-compact w-full bg-base-100 shadow-xl'>
+        <figure>
+          <img src={urlFor(pin.image).url()} alt={pin.title} />
+        </figure>
+        <div className='card-body'>
+          <h2 className='card-title'>{pin.title}</h2>
+    {/*       <p></p> */}
+          <div className='card-actions justify-end items-center'>
+            {alreadySaved && user ? (
+              <button
+                type='button'
+                className='bg-red-500 opacity-70 hover:opacity-100 text-white  px-5 py-1 text-sm rounded-xl transition-all duration-300 flex flex-row gap-2'
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                {pin?.save?.length}{' '}
+                <MdFavorite className='h-5 w-5 text-white' />
+                Like
+              </button>
+            ) : (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  likePin(pin?._id);
+                }}
+                type='button'
+                className='bg-red-500 opacity-70 hover:opacity-100 text-white  px-5 py-1 text-sm rounded-xl transition-all duration-300'
+              >
+                {likingPost ? 'liking' : 'Like'}
+              </button>
+            )}
+            {user ? (
+              <a
+                href={`${urlFor(pin?.image).url()}?dl=`}
+                download
+                onClick={(e) => e.stopPropagation()}
+                className='bg-white rounded-xl p-2 text-sm gap-1 text-black opacity-75 hover:opacity-100 hover:shadow-md transition-all duration-300 flex justify-start items-center flex-shrink-0 overflow-hidden whitespace-nowrap'
+              >
+                <BsFillCloudDownloadFill className='text-black !h-5 !w-5 ' />
+              </a>
+            ) : (
+              <Link
+                to='/login'
+                onClick={(e) => e.stopPropagation()}
+                className='bg-white rounded-xl p-2 text-sm gap-1 text-black opacity-75 hover:opacity-100 hover:shadow-md transition-all duration-300 flex justify-start items-center flex-shrink-0 overflow-hidden whitespace-nowrap'
+              >
+                <BsFillCloudDownloadFill className='bg-white text-black h-7 w-7 rounded-full flex items-center justify-center text-xl opacity-75 hover:opacity-100 hover:shadow-lg hover:outline-none transition-all duration-300' />
+              </Link>
+            )}
+          </div>
+          {/* <div className='card-actions justify-end'>
+            <div className='badge badge-outline'>
               <a
                 href={pin?.destination ? pin?.destination : '#'}
                 target='_blank'
                 rel='noreferrer'
-                className='bg-white rounded-xl p-2 text-sm gap-1 text-black opacity-75 hover:opacity-100 hover:shadow-md transition-all duration-300 flex justify-start items-center flex-shrink-0 overflow-hidden whitespace-nowrap'
+                className='text-sm gap-1 text-black flex justify-start items-center flex-shrink-0 overflow-hidden whitespace-nowrap'
                 onClick={(e) => {
                   e.stopPropagation();
                 }}
@@ -163,36 +151,11 @@ const PinCard = ({ pin, className }: Props) => {
                     : ''}
                 </p>
               </a>
-
-              {pin?.postedBy?._ref === user?.sub && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    deletePin(pin?._id);
-                  }}
-                  type='button'
-                  className='bg-white p-2 opacity-70 hover:opacity-100 text-sm rounded-xl transition-all duration-300'
-                >
-                  <BsFillTrashFill className='text-black h-4 w-4' />
-                </button>
-              )}
             </div>
-          </motion.div>
-        )}
+           
+          </div> */}
+        </div>
       </div>
-      <Link
-        to={`/user-profile/${userData?._id}`}
-        className='flex gap-2 mt-2 items-center w-full '
-      >
-        <img
-          src={userData?.image}
-          alt=''
-          className='w-8 h-8 rounded-full object-cover'
-        />
-        <p className='font-semibold text-base capitalize'>
-          {userData?.given_name}
-        </p>
-      </Link>
     </motion.div>
   );
 };

@@ -97,5 +97,5 @@ module.exports = {
     // backgroundColor: ['active'],
     extend: {},
   },
-  plugins: [],
+  plugins: [require("daisyui")],
 };

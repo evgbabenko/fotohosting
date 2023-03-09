@@ -1,13 +1,12 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react';
 import { Pin } from '../../typings';
-import MasonryLayout from './MasonryLayout'; 
+import MasonryLayout from './MasonryLayout';
 import Spinner from './Spinner';
 import { client } from '../utils/sanity';
 import { searchQuery } from '../utils/data';
 
 interface Props {
   searchTerm: string;
-
 }
 
 const Search = ({ searchTerm }: Props) => {
@@ -25,11 +24,9 @@ const Search = ({ searchTerm }: Props) => {
           setLoading(false);
         });
   }, [searchTerm]);
-  console.log(searchResult);
 
-  if (searchTerm.length === 0) return (<div>Empty search query...</div>)
-  if (loading) return <Spinner message='Searching...' />
-  
+  if (loading) return <Spinner message='Searching...' />;
+
   return (
     <div>
       Search string {searchTerm}
@@ -38,4 +35,4 @@ const Search = ({ searchTerm }: Props) => {
   );
 };
 
-export default Search
+export default Search;
