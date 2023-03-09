@@ -280,6 +280,7 @@ const CreatePin = ({ user }: Props) => {
             >
               Save
             </button>
+            
           </div>
           {/* description end */}
         </div>

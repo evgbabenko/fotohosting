@@ -135,28 +135,19 @@ const PinCard = ({ pin, className }: Props) => {
                 <BsFillCloudDownloadFill className='bg-white text-black h-7 w-7 rounded-full flex items-center justify-center text-xl opacity-75 hover:opacity-100 hover:shadow-lg hover:outline-none transition-all duration-300' />
               </Link>
             )}
-          </div>
-          {/* <div className='card-actions justify-end'>
-            <div className='badge badge-outline'>
-              <a
-                href={pin?.destination ? pin?.destination : '#'}
-                target='_blank'
-                rel='noreferrer'
-                className='text-sm gap-1 text-black flex justify-start items-center flex-shrink-0 overflow-hidden whitespace-nowrap'
+            {pin?.postedBy?._ref === user?.sub && (
+              <button
                 onClick={(e) => {
                   e.stopPropagation();
+                  deletePin(pin?._id);
                 }}
+                type='button'
+                className='bg-white rounded-xl p-2 text-sm gap-1 text-black opacity-75 hover:opacity-100 hover:shadow-md transition-all duration-300 flex justify-start items-center flex-shrink-0 overflow-hidden whitespace-nowrap'
               >
-                <BsFillArrowUpRightCircleFill className='text-black !h-5 !w-5 ' />
-                <p>
-                  {pin?.destination
-                    ? linkReplece(pin?.destination).slice(0, 20)
-                    : ''}
-                </p>
-              </a>
-            </div>
-           
-          </div> */}
+                <BsFillTrashFill className='bg-white text-black h-6 w-6 rounded-full flex items-center justify-center text-xl transition-all duration-300' />
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </motion.div>
