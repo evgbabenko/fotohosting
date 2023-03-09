@@ -42,21 +42,20 @@ const NavBar = ({ searchTerm, setSearchTerm, user }: Props) => {
             </label>
           </div>
         </div>
-        {user && (<div className='flex gap-3'>
-          <Link to={`/user-profile/${user?._id}`}>
-            <img
-              src={user?.image}
-              alt=''
-              className='hidden md:flex w-10 aspect-square rounded-full'
-            />
-          </Link>
-          <Link
-            to='create-pin'
-            className='bg-black w-10 aspect-square text-white flex justify-center items-center rounded-lg hover:bg-sky-800 transition-all duration-200'
-          >
-            <IoMdAdd />
-          </Link>
-        </div>)}
+        {user && (
+          <div className='flex gap-3'>
+            <Link to={`/user-profile/${user?._id}`}>
+              <img
+                src={user?.image}
+                alt=''
+                className='hidden md:flex w-14 aspect-square rounded-full'
+              />
+            </Link>
+            <Link to='create-pin' className='btn btn-outline'>
+              <IoMdAdd className='h-4 w-4'/>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
