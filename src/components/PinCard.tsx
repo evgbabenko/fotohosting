@@ -90,7 +90,7 @@ const PinCard = ({ pin, className }: Props) => {
           <img src={urlFor(pin.image).url()} alt={pin.title} />
         </figure>
         <div className='card-body'>
-          <h2 className='card-title'>{pin.title}</h2>
+          <h2 className='card-title capitalize'>{pin.title}</h2>
           {/*       <p></p> */}
           <div className='card-actions justify-end items-center'>
             {alreadySaved && user ? (
