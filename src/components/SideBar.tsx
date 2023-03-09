@@ -3,7 +3,11 @@ import { Category, SanityUser } from '../../typings';
 import { Link, NavLink } from 'react-router-dom';
 import { client, urlFor } from '../utils/sanity';
 import { categoriesQuery } from '../utils/data';
-import { BsFileEarmarkPersonFill, BsHouseDoorFill, BsPersonCircle } from 'react-icons/bs';
+import {
+  BsFileEarmarkPersonFill,
+  BsHouseDoorFill,
+  BsPersonCircle,
+} from 'react-icons/bs';
 
 interface Props {
   user: SanityUser | null;
@@ -103,11 +107,13 @@ const SideBar = ({ user, closeToggle }: Props) => {
             }`}
               >
                 {category?.catImage ? (
-                  <img
-                    src={urlFor(category?.catImage).url()}
-                    alt=''
-                    className='w-10 aspect-square rounded-full object-cover'
-                  />
+                  <div className='bg-neutral-focus text-neutral-content rounded-full w-8'>
+                    <img
+                      src={urlFor(category?.catImage).url()}
+                      alt=''
+                      className='aspect-square rounded-full object-cover'
+                    />
+                  </div>
                 ) : (
                   <img
                     src='https://media.istockphoto.com/id/1357365823/vector/default-image-icon-vector-missing-picture-page-for-website-design-or-mobile-app-no-photo.jpg?s=612x612&w=0&k=20&c=PM_optEhHBTZkuJQLlCjLz-v3zzxp-1mpNQZsdjrbns='
